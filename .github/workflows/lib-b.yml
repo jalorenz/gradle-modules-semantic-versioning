@@ -29,6 +29,9 @@ jobs:
           use_branches: 'false'
           version_format: '${major}.${minor}.${patch}'
           version_from_branch: 'false'
+          major_pattern: '/!:|BREAKING CHANGE:/'
+          major_regexp_flags: ''
+          minor_pattern: "/feat(\\(.+\\))?:/"
       - name: Setup gradle
         if: ${{ steps.semantic_version.outputs.changed == 'true' }}
         uses: gradle/actions/setup-gradle@v6
