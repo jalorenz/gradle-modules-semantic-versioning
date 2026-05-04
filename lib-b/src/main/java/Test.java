@@ -3,7 +3,7 @@ class Test {
         System.out.println("lib-a");
     }
 
-    static void test3 {
+    static void test3() {
         System.out.println("lib-a test3");
     }
 }
