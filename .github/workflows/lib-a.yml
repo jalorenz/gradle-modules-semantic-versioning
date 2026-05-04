@@ -26,6 +26,6 @@ jobs:
         uses: gradle/actions/setup-gradle@v6
       - name: Release lib a
         run: ./gradlew :lib-a:publish -Pversion=${{ steps.semantic_version.outputs.new_version }}
-        with:
+        env:
           GPR_USERNAME: jalorenz
           GPR_TOKEN: ${{ secrets.WRITE_GITHUB_PACKAGES_PAT }}
