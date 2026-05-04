@@ -29,6 +29,7 @@ jobs:
           version_format: '${major}.${minor}.${patch}'
           version_from_branch: 'false'
       - name: Setup gradle
+        if: ${{ steps.semantic_version.outputs.changed == 'true' }}
         uses: gradle/actions/setup-gradle@v6
       - name: Release lib b
         run: ./gradlew :lib-b:publish -Pversion=${{ steps.semantic_version.outputs.version }}
