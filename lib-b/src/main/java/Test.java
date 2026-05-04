@@ -6,4 +6,12 @@ class Test {
     static void test3() {
         System.out.println("lib-a test3");
     }
+
+    static void test4() {
+        System.out.println("lib-a test4");
+    }
+
+    static void test5() {
+        System.out.println("lib-a test5");
+    }
 }
