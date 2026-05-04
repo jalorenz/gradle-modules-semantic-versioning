@@ -2,6 +2,8 @@ name: Lib a
 
 on:
   push:
+    branches:
+      - main
 
 jobs:
   release:
