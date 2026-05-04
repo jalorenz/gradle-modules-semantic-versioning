@@ -6,8 +6,13 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0    # fetch all history
+          filter: blob:none # exclude file contents for faster checkout
       - uses: paulhatch/semantic-version@v5.4.0
         id: semantic_version
         with:
@@ -25,8 +30,18 @@ jobs:
           version_from_branch: 'false'
       - name: Setup gradle
         uses: gradle/actions/setup-gradle@v6
-      - name: Release lib a
+      - name: Release lib b
         run: ./gradlew :lib-b:publish -Pversion=${{ steps.semantic_version.outputs.version }}
         env:
           GPR_USERNAME: jalorenz
           GPR_TOKEN: ${{ secrets.WRITE_GITHUB_PACKAGES_PAT }}
+      - name: Create and push tag
+        env:
+          TAG: lib-b-${{ steps.semantic_version.outputs.version }}
+        run: |
+          if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null; then
+            echo "Tag $TAG already exists, skipping"
+          else
+            git tag "$TAG"
+            git push origin "$TAG"
+          fi
