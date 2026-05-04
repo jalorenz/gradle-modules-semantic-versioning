@@ -10,4 +10,8 @@ class Test {
     void helloWorld() {
         System.out.println("lib-b test3");
     }
+
+    void helloWorld2() {
+        System.out.println("lib-b test3");
+    }
 }
