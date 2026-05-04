@@ -17,8 +17,8 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/jalorenz/gradle-modules-semantic-versioning")
             credentials {
-                username = System.getenv("USERNAME")
-                password = System.getenv("TOKEN")
+                username = System.getenv("GPR_USERNAME")
+                password = System.getenv("GPR_TOKEN")
             }
         }
     }
