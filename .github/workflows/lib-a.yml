@@ -20,7 +20,6 @@ jobs:
           bump_each_commit: 'false'
           bump_each_commit_patch_pattern: ''
           change_path: 'lib-a/**/* build.gradle.kts settings.gradle.kts'
-          tag_prefix: 'lib-a-'
           namespace: 'lib-a'
           search_commit_body: 'false'
           user_format_type: 'csv'
@@ -38,7 +37,7 @@ jobs:
           GPR_TOKEN: ${{ secrets.WRITE_GITHUB_PACKAGES_PAT }}
       - name: Create and push tag
         env:
-          TAG: lib-a-${{ steps.semantic_version.outputs.version }}
+          TAG: ${{ steps.semantic_version.outputs.version_tag }}
         run: |
           if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null; then
             echo "Tag $TAG already exists, skipping"
