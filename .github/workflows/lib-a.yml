@@ -1,0 +1,28 @@
+name: Lib a
+
+on:
+  push:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: paulhatch/semantic-version@v5.4.0
+        with:
+          enable_prerelease_mode: 'false'
+          bump_each_commit: 'false'
+          bump_each_commit_patch_pattern: ''
+          change_path: 'lib-a/**/* build.gradle.kts settings.gradle.kts'
+          tag_prefix: 'lib-a-'
+          namespace: 'lib-a'
+          search_commit_body: 'false'
+          user_format_type: 'csv'
+          debug: 'false'
+          use_branches: 'false'
+          version_format: '${major}.${minor}.${patch}'
+          version_from_branch: 'false'
+      - name: Setup gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Release lib a
+        run: ./gradlew :lib-a:publish -Pversion=${{ steps.semantic_version.outputs.new_version }}
