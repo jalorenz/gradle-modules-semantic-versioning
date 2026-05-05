@@ -41,14 +41,18 @@ jobs:
         env:
           GPR_USERNAME: jalorenz
           GPR_TOKEN: ${{ secrets.WRITE_GITHUB_PACKAGES_PAT }}
-      - name: Create and push tag
+      - name: Create changelog text
         if: ${{ steps.semantic_version.outputs.changed == 'true' }}
-        env:
-          TAG: ${{ steps.semantic_version.outputs.version_tag }}
-        run: |
-          if git ls-remote --exit-code --tags origin "refs/tags/$TAG" >/dev/null; then
-            echo "Tag $TAG already exists, skipping"
-          else
-            git tag "$TAG"
-            git push origin "$TAG"
-          fi
+        id: changelog
+        uses: loopwerk/tag-changelog@v1
+        with:
+          token: ${{ secrets.WRITE_GITHUB_PACKAGES_PAT }}
+          exclude_types: other,docs,chore
+      - name: Create release
+        if: ${{ steps.semantic_version.outputs.changed == 'true' }}
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.semantic_version.outputs.version_tag }}
+          name: Release ${{ steps.semantic_version.outputs.version_tag }}
+          body: ${{ steps.changelog.outputs.changes }}
+          token: ${{ secrets.WRITE_GITHUB_PACKAGES_PAT }}
